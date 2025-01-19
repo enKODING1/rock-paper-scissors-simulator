@@ -1,4 +1,5 @@
 import { State } from "../../types/game";
+import ImageManager from "./ImageManager";
 
 export default class RPSGame {
   x: number;
@@ -10,6 +11,7 @@ export default class RPSGame {
   state: State;
   stateImagePath: string;
   img: HTMLImageElement;
+  isLoaded: boolean;
 
   constructor(
     x: number,
@@ -29,8 +31,12 @@ export default class RPSGame {
     this.state = state;
     this.stateImagePath = stateImagePath;
 
-    this.img = new Image();
-    this.img.src = this.stateImagePath;
+    ImageManager.loadImage(stateImagePath)
+      .then((img) => {
+        this.img = img;
+        this.isLoaded = true;
+      })
+      .catch((error) => console.error(error));
   }
 
   draw(ctx: CanvasRenderingContext2D, stageWidth: number, stageHeight: number) {
@@ -38,8 +44,12 @@ export default class RPSGame {
     this.y += this.sy;
 
     ctx.beginPath();
-    ctx.fillStyle = "black";
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (this.isLoaded && this.img) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    } else {
+      console.error("Image not yet loaded:", this.stateImagePath);
+    }
+
     ctx.closePath();
 
     this.crash(stageWidth, stageHeight);

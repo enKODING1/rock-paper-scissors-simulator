@@ -1,15 +1,13 @@
 import { State } from "../../types/game";
 import RPS from "../models/RPS";
 import CollisionManager from "../models/CollisionManager";
+import ImageManager from "../models/ImageManager";
 
 class App {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   stageWidth: number;
   stageHeight: number;
-  rocks: RPS[];
-  papers: RPS[];
-  scissors: RPS[];
   rpsList: RPS[];
 
   constructor() {
@@ -17,23 +15,25 @@ class App {
     this.ctx = this.canvas.getContext("2d");
     this.stageWidth = this.canvas.width;
     this.stageHeight = this.canvas.height;
+    const range = 30;
 
-    this.rocks = this.createRPS(this.stageWidth, this.stageHeight, "rock", 10);
-    this.papers = this.createRPS(
-      this.stageWidth,
-      this.stageHeight,
-      "paper",
-      10
+    this.rpsList = [
+      ...this.createRPS(this.stageWidth, this.stageHeight, "rock", range),
+      ...this.createRPS(this.stageWidth, this.stageHeight, "paper", range),
+      ...this.createRPS(this.stageWidth, this.stageHeight, "scissor", range),
+    ];
+
+    this.startAnimation();
+  }
+
+  async startAnimation() {
+    await Promise.all(
+      this.rpsList.map((rps) =>
+        ImageManager.loadImage(RPS.getStateImagePath(rps.state))
+      )
     );
-    this.scissors = this.createRPS(
-      this.stageWidth,
-      this.stageHeight,
-      "scissor",
-      10
-    );
 
-    this.rpsList = [...this.rocks, ...this.papers, ...this.scissors];
-
+    console.log("All images loaded. Starting animation...");
     window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -54,8 +54,8 @@ class App {
     range: number
   ) {
     const array: RPS[] = [];
-    const width = 20;
-    const height = 20;
+    const width = 35;
+    const height = 35;
     const createRange = Math.floor(Math.random() * range);
 
     for (let i = 0; i < createRange; i++) {

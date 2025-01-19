@@ -6,7 +6,7 @@ export default class CollisionManager {
     const dy = obj2.y - obj1.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    return distance <= obj1.width / 2;
+    return distance <= obj1.width;
   }
 
   static resolveCollision(obj1: RPS, obj2: RPS) {
@@ -23,7 +23,7 @@ export default class CollisionManager {
   static handleCollision(obj: RPS[]) {
     const length = obj.length;
     for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length; j++) {
+      for (let j = i + 1; j < length; j++) {
         if (this.checkCollision(obj[i], obj[j])) {
           this.resolveCollision(obj[i], obj[j]);
         }

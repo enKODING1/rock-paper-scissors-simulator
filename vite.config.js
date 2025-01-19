@@ -2,10 +2,10 @@ import { defineConfig } from "vite";
 import checker from "vite-plugin-checker";
 
 export default defineConfig({
-  plugins: [
-    checker({typescript: true})
-  ],
+  base: "./",
+  assetsInclude: ["**/*.png", "**/*.jpg", "**/*.jpeg"],
+  plugins: [checker({ typescript: true })],
   build: {
-    sourcemap: false
-  } 
-})
+    sourcemap: false,
+  },
+});
