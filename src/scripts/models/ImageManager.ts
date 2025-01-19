@@ -11,7 +11,7 @@ export default class ImageManager {
       img.src = path;
 
       img.onload = () => {
-        this.images.set(path, img); // 캐싱
+        this.images.set(path, img);
         resolve(img);
       };
 
