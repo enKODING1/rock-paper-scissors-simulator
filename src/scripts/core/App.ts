@@ -3,28 +3,68 @@ import RPS from "../models/RPS";
 class App {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-  rock: RPS;
-  paper: RPS;
-  scissor: RPS;
+  stageWidth: number;
+  stageHeight: number;
+  rocks: RPS[];
+  papers: RPS[];
+  scissors: RPS[];
 
   constructor() {
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.stageWidth = this.canvas.width;
+    this.stageHeight = this.canvas.height;
 
-    this.rock = new RPS(14, 13, 20, 20, 1, "rock");
-    this.paper = new RPS(20, 0, 20, 20, 0.2, "paper");
-    this.scissor = new RPS(100, 10, 20, 20, -1, "scissor");
+    this.rocks = this.createRPS(this.stageWidth, this.stageHeight, "rock", 30);
+    this.papers = this.createRPS(
+      this.stageWidth,
+      this.stageHeight,
+      "paper",
+      30
+    );
+    this.scissors = this.createRPS(
+      this.stageWidth,
+      this.stageHeight,
+      "scissor",
+      30
+    );
+
     window.requestAnimationFrame(this.animate.bind(this));
-    this.animate();
   }
 
   animate() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     window.requestAnimationFrame(this.animate.bind(this));
+    this.rocks.forEach((v) =>
+      v.draw(this.ctx, this.stageWidth, this.stageHeight)
+    );
+    this.papers.forEach((v) =>
+      v.draw(this.ctx, this.stageWidth, this.stageHeight)
+    );
+    this.scissors.forEach((v) =>
+      v.draw(this.ctx, this.stageWidth, this.stageHeight)
+    );
+  }
 
-    this.rock.draw(this.ctx, this.canvas.width, this.canvas.height);
-    this.paper.draw(this.ctx, this.canvas.width, this.canvas.height);
-    this.scissor.draw(this.ctx, this.canvas.width, this.canvas.height);
+  createRPS(
+    stageWidth: number,
+    stageHeight: number,
+    state: string,
+    range: number
+  ) {
+    const array: RPS[] = [];
+    const width = 20;
+    const height = 20;
+    const createRange = Math.floor(Math.random() * range);
+
+    for (let i = 0; i < createRange; i++) {
+      const x = Math.floor(Math.random() * (stageWidth - width));
+      const y = Math.floor(Math.random() * (stageHeight - height));
+      const speed = Math.random() * 5 - 2;
+      array.push(new RPS(x, y, width, height, speed, state));
+    }
+
+    return array;
   }
 }
 
