@@ -7,5 +7,6 @@ export default defineConfig({
   plugins: [checker({ typescript: true })],
   build: {
     sourcemap: false,
+    cssCodeSplit: true,
   },
 });
