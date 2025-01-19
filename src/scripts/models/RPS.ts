@@ -1,3 +1,4 @@
+import { State } from "../../types/game";
 import RPSGame from "./RPSGame";
 
 export default class RPS extends RPSGame {
@@ -7,7 +8,7 @@ export default class RPS extends RPSGame {
     width: number,
     height: number,
     speed: number,
-    state: string
+    state: State
   ) {
     const stateImagePath = RPS.getStateImagePath(state);
     super(x, y, width, height, speed, state, stateImagePath);
@@ -20,7 +21,7 @@ export default class RPS extends RPSGame {
     return null;
   }
 
-  updateState(state: string) {
+  updateState(state: State) {
     this.state = state;
     this.img.src = RPS.getStateImagePath(state);
   }

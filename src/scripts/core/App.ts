@@ -1,4 +1,6 @@
+import { State } from "../../types/game";
 import RPS from "../models/RPS";
+import CollisionManager from "../models/CollisionManager";
 
 class App {
   canvas: HTMLCanvasElement;
@@ -8,6 +10,7 @@ class App {
   rocks: RPS[];
   papers: RPS[];
   scissors: RPS[];
+  rpsList: RPS[];
 
   constructor() {
     this.canvas = document.querySelector("#canvas");
@@ -15,19 +18,21 @@ class App {
     this.stageWidth = this.canvas.width;
     this.stageHeight = this.canvas.height;
 
-    this.rocks = this.createRPS(this.stageWidth, this.stageHeight, "rock", 30);
+    this.rocks = this.createRPS(this.stageWidth, this.stageHeight, "rock", 10);
     this.papers = this.createRPS(
       this.stageWidth,
       this.stageHeight,
       "paper",
-      30
+      10
     );
     this.scissors = this.createRPS(
       this.stageWidth,
       this.stageHeight,
       "scissor",
-      30
+      10
     );
+
+    this.rpsList = [...this.rocks, ...this.papers, ...this.scissors];
 
     window.requestAnimationFrame(this.animate.bind(this));
   }
@@ -35,13 +40,9 @@ class App {
   animate() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     window.requestAnimationFrame(this.animate.bind(this));
-    this.rocks.forEach((v) =>
-      v.draw(this.ctx, this.stageWidth, this.stageHeight)
-    );
-    this.papers.forEach((v) =>
-      v.draw(this.ctx, this.stageWidth, this.stageHeight)
-    );
-    this.scissors.forEach((v) =>
+
+    CollisionManager.handleCollision(this.rpsList);
+    this.rpsList.forEach((v) =>
       v.draw(this.ctx, this.stageWidth, this.stageHeight)
     );
   }
@@ -49,7 +50,7 @@ class App {
   createRPS(
     stageWidth: number,
     stageHeight: number,
-    state: string,
+    state: State,
     range: number
   ) {
     const array: RPS[] = [];

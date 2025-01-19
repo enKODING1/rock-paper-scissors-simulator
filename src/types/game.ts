@@ -1,0 +1,1 @@
+export type State = "rock" | "paper" | "scissor";

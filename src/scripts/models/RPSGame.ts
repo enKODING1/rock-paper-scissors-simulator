@@ -1,3 +1,5 @@
+import { State } from "../../types/game";
+
 export default class RPSGame {
   x: number;
   y: number;
@@ -5,7 +7,7 @@ export default class RPSGame {
   sy: number;
   width: number;
   height: number;
-  state: string;
+  state: State;
   stateImagePath: string;
   img: HTMLImageElement;
 
@@ -15,7 +17,7 @@ export default class RPSGame {
     width: number,
     height: number,
     speed: number,
-    state: string,
+    state: State,
     stateImagePath: string
   ) {
     this.x = x;
