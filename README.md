@@ -13,7 +13,7 @@ Rock Paper Scissors Simulator는 가위바위보 게임을 시각적 시뮬레�
 
 ## 전제 조건
 - Node.js 18.x or higher
-론
+
 ## 설치
 ```zsh
 git clone https://github.com/enKODING1/rock-paper-scissors-simulator.git
